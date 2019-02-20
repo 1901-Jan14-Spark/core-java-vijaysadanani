@@ -14,8 +14,12 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String reverse(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		String reversed = "";
+		for (int i = string.length()-1; i >= 0 ; i--)
+		{
+			reversed += string.charAt(i);
+		}
+		return reversed;
 	}
 
 	/**
