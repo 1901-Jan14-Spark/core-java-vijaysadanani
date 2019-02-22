@@ -1,6 +1,9 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,8 +34,13 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		String[] theirInput = phrase.split(",\\s|\\s|-");
+		String acronym = "";
+		for(String str : theirInput)
+		{
+			acronym += str.toUpperCase().charAt(0);
+		}
+		return acronym;
 	}
 
 	/**
@@ -85,17 +93,37 @@ public class EvaluationService {
 		}
 
 		public boolean isEquilateral() {
-			// TODO Write an implementation for this method declaration
+			if (sideOne == sideTwo && sideTwo == sideThree)
+			{
+				return true;
+			} else
 			return false;
 		}
 
 		public boolean isIsosceles() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			if(sideOne == sideThree && sideTwo != sideThree)
+			{
+				return true;
+			}
+			if(sideTwo == sideOne && sideThree != sideOne)
+			{
+				return true;
+			}
+			if(sideThree == sideTwo && sideOne != sideTwo)
+			{
+				return true;
+			}
+			else 
+			{
+				return false;
+			}
 		}
 
 		public boolean isScalene() {
-			// TODO Write an implementation for this method declaration
+			if (sideOne != sideTwo || sideOne != sideThree)
+			{
+				return true;
+			} else
 			return false;
 		}
 
@@ -117,8 +145,52 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getScrabbleScore(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		int score = 0;
+		for(int i = 0; i < string.length(); i++) {
+			switch(string.toLowerCase().charAt(i)){
+			case 'a': 
+			case 'e':
+			case 'i':
+			case 'o':
+			case 'u':
+			case 'l':
+			case 'n':
+			case 'r':
+			case 's':
+			case 't':
+				score += 1;
+				break;
+			case 'd':
+			case 'g':
+				score += 2;
+				break;
+			case 'b':
+			case 'c':
+			case 'm':
+			case 'p':
+				score += 3;
+				break;
+			case 'f':
+			case 'h':
+			case 'v':
+			case 'w':
+			case 'y':
+				score += 4;
+				break;
+			case 'k':
+				score += 5;
+				break;
+			case 'j':
+			case 'x':
+				score += 8;
+				break;
+			case 'q':
+			case 'z':
+				score += 10;
+				break;	
+		}
+		}
+		return score;
 	}
 
 	/**
@@ -153,9 +225,14 @@ public class EvaluationService {
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
 	public String cleanPhoneNumber(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+//		\\(|\\)\\s|\\s|-|\\.
+		String newString = string.replaceAll("[^!0-9]", "");
+			if(newString.length() != 10) {
+			throw new IllegalArgumentException();
+			}
+		return newString;
 	}
+		
 
 	/**
 	 * 6. Given a phrase, count the occurrences of each word in that phrase.
@@ -166,9 +243,19 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
+	
 	public Map<String, Integer> wordCount(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		HashMap<String, Integer> ourMap = new HashMap<>();
+		String[] splitString = string.split("\\s|,\n|,");
+		for(int i = 0; i <splitString.length; i++) {
+			if(ourMap.get(splitString[i]) == null) {
+				ourMap.put(splitString[i], 1);
+			} else {
+				ourMap.put(splitString[i], ourMap.get(splitString[i])+1);
+			}
+		}
+		return ourMap;
+
 	}
 
 	/**
@@ -210,7 +297,29 @@ public class EvaluationService {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
-			// TODO Write an implementation for this method declaration
+			List<Integer> arrList = new ArrayList<>();
+			int low = (int) arrList.get(0);
+			System.out.println(low);
+			int high = (int) arrList.get(arrList.size()-1);
+			System.out.println(high);
+			
+			if(high>=low) {
+				int mid = ((high-low)/2)+low;
+				System.out.println(mid);
+				
+				if (arrList.get(mid) == arrList.get((int) t)) {
+					return mid;
+				}
+				
+//				if (arrList.get(mid) < arrList.get((int) t)) {
+//					return mid;
+//				}
+//				
+//				if (arrList.get(mid) > arrList.get((int) t)) {
+//					return mid;
+//				}
+			}
+			
 			return 0;
 		}
 
@@ -247,8 +356,29 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String toPigLatin(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		String ay = "ay";
+		String cut = "";
+		String[] array = string.split(" ");
+		Character fstLet = string.toLowerCase().charAt(0);
+		if(fstLet == 'a' || fstLet == 'i' || fstLet == 'e' || fstLet == 'o' || fstLet == 'u'){
+			return string.concat(ay);
+		} else {
+			for (int i = 0; i<array.length; i++) {
+				for (int j = 0; j<array[i].length(); j++) {
+					if (array[i].charAt(j) == 'a' || array[i].charAt(j) == 'e' || array[i].charAt(j) == 'i' || array[i].charAt(j) == 'o' || array[i].charAt(j) == 'u') {
+						cut = array[i].substring(0, j);
+						System.out.println(cut);
+						string = string.replace(cut, "");
+						string = string.concat(cut);
+						string = string.concat(ay);
+						//need to fix for the string with spaces, works for others
+						break;
+					}
+				}
+			}
+		}
+		System.out.println(string);
+		return string;
 	}
 
 	/**
@@ -267,7 +397,14 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isArmstrongNumber(int input) {
-		// TODO Write an implementation for this method declaration
+		String charString = String.valueOf(input);
+		int number = 0;
+		for(int i = 0; i < charString.length(); i++) {
+			number += Math.pow(Integer.valueOf(String.valueOf(charString.charAt(i))), charString.length());
+		}
+		if (number == input) {
+			return true;
+		} else
 		return false;
 	}
 
@@ -281,9 +418,23 @@ public class EvaluationService {
 	 * @param l
 	 * @return
 	 */
+	
+	//Need to fi
 	public List<Integer> calculatePrimeFactorsOf(long l) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		ArrayList<Integer> factors = new ArrayList<>();
+//		List<Integer> primeFactList = new ArrayList<>();
+		for (int i =2 ; i <= l; i++) {
+			while (l % i == 0) {
+				factors.add(i);
+				l /= i;
+			}
+		}
+//		for(int i = 0; i < factors.size(); i++) {
+//			if (factors.get(i) % 1 == 0 && factors.get(i) % factors.get(i) == 0) {
+//				primeFactList.add(factors.get(i));
+//			}
+//		}
+		return factors;
 	}
 
 	/**
@@ -340,8 +491,28 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int calculateNthPrime(int i) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		if (i == 0) {
+			throw new IllegalArgumentException();
+		}
+		int check;
+		int count;
+		
+		for (check = 2, count = 0; count < i ; check++) {
+			if (isPrime(check)) {
+				count++;
+				
+			}
+		}
+		return check-1;
+	}
+	
+	public static boolean isPrime(int n) {
+		for (int i = 2; i < n; i++) {
+			if(n % i == 0){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
