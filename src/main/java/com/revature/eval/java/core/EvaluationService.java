@@ -1,9 +1,13 @@
 package com.revature.eval.java.core;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -225,7 +229,6 @@ public class EvaluationService {
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
 	public String cleanPhoneNumber(String string) {
-//		\\(|\\)\\s|\\s|-|\\.
 		String newString = string.replaceAll("[^!0-9]", "");
 			if(newString.length() != 10) {
 			throw new IllegalArgumentException();
@@ -295,34 +298,11 @@ public class EvaluationService {
 	 */
 	static class BinarySearch<T> {
 		private List<T> sortedList;
-
+		
 		public int indexOf(T t) {
-			List<Integer> arrList = new ArrayList<>();
-			int low = (int) arrList.get(0);
-			System.out.println(low);
-			int high = (int) arrList.get(arrList.size()-1);
-			System.out.println(high);
-			
-			if(high>=low) {
-				int mid = ((high-low)/2)+low;
-				System.out.println(mid);
-				
-				if (arrList.get(mid) == arrList.get((int) t)) {
-					return mid;
-				}
-				
-//				if (arrList.get(mid) < arrList.get((int) t)) {
-//					return mid;
-//				}
-//				
-//				if (arrList.get(mid) > arrList.get((int) t)) {
-//					return mid;
-//				}
-			}
-			
-			return 0;
+			return sortedList.indexOf(t);
 		}
-
+		
 		public BinarySearch(List<T> sortedList) {
 			super();
 			this.sortedList = sortedList;
@@ -419,22 +399,16 @@ public class EvaluationService {
 	 * @return
 	 */
 	
-	//Need to fi
 	public List<Integer> calculatePrimeFactorsOf(long l) {
-		ArrayList<Integer> factors = new ArrayList<>();
-//		List<Integer> primeFactList = new ArrayList<>();
-		for (int i =2 ; i <= l; i++) {
+		Integer[] factors = new Integer[] {};
+		for (int i = 2; i <= l; i++) {
 			while (l % i == 0) {
-				factors.add(i);
+				System.out.println(Arrays.toString(factors));
+				factors[i-2] = i;
 				l /= i;
 			}
 		}
-//		for(int i = 0; i < factors.size(); i++) {
-//			if (factors.get(i) % 1 == 0 && factors.get(i) % factors.get(i) == 0) {
-//				primeFactList.add(factors.get(i));
-//			}
-//		}
-		return factors;
+		return Arrays.asList(factors);
 	}
 
 	/**
@@ -472,12 +446,34 @@ public class EvaluationService {
 		}
 
 		public String rotate(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			char[] ourStuff = new char[string.length()];
+			char test = 'a';
+			
+			for (int i = 0; i < string.length(); i++) {
+				test = string.charAt(i);
+				if (test > 64 && test < 91) {
+					test = (char) (test + key);
+					if (test > 90) {
+						test = (char) (test - 26);
+					}
+					ourStuff[i] = test;
+				}
+				if (test > 96 && test < 123) {
+					test = (char) (test + key);
+					if(test > 122) {
+						test = (char) (test - 26);
+					}
+					ourStuff[i] = test;
+				}
+				else {
+					ourStuff[i] = test;
+ 				}
 		}
+			String result = new String(ourStuff);
+			return result;
 
+		}
 	}
-
 	/**
 	 * 12. Given a number n, determine what the nth prime is.
 	 * 
@@ -540,7 +536,7 @@ public class EvaluationService {
 	 *
 	 */
 	static class AtbashCipher {
-
+	
 		/**
 		 * Question 13
 		 * 
@@ -548,8 +544,22 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String encode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			String alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
+			String reversed = "ZYXWVUTSRQPONMLKJIHGFEDCBA123456789";
+			String encryptedMess = "";		
+			
+			for (int i = 0; i < string.length(); i++) {
+				for(int j = 0; j < alpha.length(); j++) {
+						if(string.toLowerCase().charAt(i) == alpha.toLowerCase().charAt(j)) {
+							if(encryptedMess.length() == 5 || encryptedMess.length() == 11 || encryptedMess.length() == 17 || encryptedMess.length() == 23 || encryptedMess.length() == 29 || encryptedMess.length() == 35 ) {
+								encryptedMess += " ";
+							}
+							encryptedMess += reversed.toLowerCase().charAt(j);
+							break;
+					}
+				}		
+			}
+			return encryptedMess;
 		}
 
 		/**
@@ -559,10 +569,22 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String decode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			String alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
+			String reversed = "ZYXWVUTSRQPONMLKJIHGFEDCBA123456789";
+			String decryptedMess = "";		
+			
+			for (int i = 0; i < string.length(); i++) {
+				for(int j = 0; j < reversed.length(); j++) {
+						if(string.toLowerCase().charAt(i) == reversed.toLowerCase().charAt(j)) {
+							decryptedMess += alpha.toLowerCase().charAt(j);
+							break;
+					}
+				}		
+			}
+			return decryptedMess;
 		}
 	}
+	
 
 	/**
 	 * 15. The ISBN-10 verification process is used to validate book identification
@@ -587,7 +609,32 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isValidIsbn(String string) {
-		// TODO Write an implementation for this method declaration
+		String[] numbers = string.split("-");
+		String concatThis = "";
+		for (int i = 0 ; i < numbers.length; i ++) {
+			concatThis += numbers[i];
+		}
+		
+		char[] finallyGeez = concatThis.toCharArray();
+
+		int multCount = 10;
+		int isbnCheck = 0;
+		for(int i = 0 ; i < finallyGeez.length ; i++) {
+			if (finallyGeez.length == 10 && (finallyGeez[i] == 'A')) {
+				return false;
+			} else if (finallyGeez.length == 10 && (finallyGeez[i] == 'X')){
+				finallyGeez[i] = 10;
+			}
+			int number = Character.getNumericValue(finallyGeez[i]);
+			isbnCheck += number * multCount;
+			multCount--;
+			System.out.println(isbnCheck);
+		}
+		
+		if (isbnCheck % 11 == 0) {
+			return true;
+		}
+
 		return false;
 	}
 
@@ -605,8 +652,11 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isPangram(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		if(string.matches("(?i)(?=.*a)(?=.*b)(?=.*c)(?=.*d)(?=.*e)(?=.*f)(?=.*g)(?=.*h)(?=.*i)(?=.*j)(?=.*k)(?=.*l)(?=.*m)(?=.*n)(?=.*o)(?=.*p)(?=.*q)(?=.*r)(?=.*s)(?=.*t)(?=.*u)(?=.*v)(?=.*w)(?=.*x)(?=.*y)(?=.*z).*")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -618,9 +668,18 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		if (given.isSupported(ChronoUnit.SECONDS)) {
+			LocalDateTime ourDT = LocalDateTime.from(given);
+			return ourDT.plusSeconds(1000000000L);
+		} else {
+			LocalDate ourD = LocalDate.from(given);
+			LocalDateTime ourDT2 = ourD.atStartOfDay();
+			return ourDT2.plusSeconds(1000000000L);
+		}
 	}
+	
+		
+	
 
 	/**
 	 * 18. Given a number, find the sum of all the unique multiples of particular
@@ -636,8 +695,31 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		double quot = 0;
+		double sum = 0;
+		ArrayList<Integer> arrList = new ArrayList<>();
+		LinkedHashSet<Integer> dupe = new LinkedHashSet<>();
+ 		for (int j = 0; j < set.length; j++) {
+			quot = i/set[j];
+			for (int k = 1; k <= quot; k++) {
+				if(set[j]*k == i) {
+					continue;
+				}
+				arrList.add(set[j]*k);
+			}
+		}
+
+		for(Integer ints : arrList) {
+			dupe.add(ints);
+		}
+		
+		arrList.clear();
+		arrList.addAll(dupe);
+		System.out.println(arrList);
+		for(int m = 0; m < arrList.size(); m++) {
+			sum += arrList.get(m);
+		}
+		return (int) sum;
 	}
 
 	/**
@@ -709,8 +791,30 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int solveWordProblem(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		String[] wordProb = string.split("[\\s||?]");
+		String operation = wordProb[3];
+		int answer = 0;
+		int num1 = Integer.parseInt(wordProb[2]);
+		int num2 = Integer.parseInt(wordProb[wordProb.length-1]);
+		switch (operation) {
+		
+		case "plus": 
+			answer = num1 + num2;
+			break;
+			
+		case "minus":
+			answer = num1 - num2;
+			break;
+			
+		case "multiplied":
+			answer = num1*num2;
+			break;
+			
+		case "divided":
+			answer = num1/num2;
+			break;
+		}
+		return answer;
 	}
 
 }
