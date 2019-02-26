@@ -399,16 +399,16 @@ public class EvaluationService {
 	 * @return
 	 */
 	
-	public List<Integer> calculatePrimeFactorsOf(long l) {
-		Integer[] factors = new Integer[] {};
-		for (int i = 2; i <= l; i++) {
+	public List<Long> calculatePrimeFactorsOf(long l) {
+		List<Long> myList = new ArrayList<Long>();
+		for (long i = 2; i <= l; i++) {
 			while (l % i == 0) {
-				System.out.println(Arrays.toString(factors));
-				factors[i-2] = i;
+				myList.add(i);
 				l /= i;
 			}
 		}
-		return Arrays.asList(factors);
+		System.out.println(myList);
+		return myList;
 	}
 
 	/**
